@@ -17,7 +17,7 @@ class Users(db.Model, UserMixin):
     email = db.Column(db.TEXT, nullable=False, unique=True)
     password = db.Column(db.TEXT, nullable=True)
     date_created = db.Column(db.DATETIME, nullable=False, default=datetime.utcnow())
-    blog = db.relationship('Blog')
+    blog = db.relationship('Blog', backref='writer', lazy=True)
 
     def __repr__(self):
         return f'User({self.id}, {self.name}, {self.email})'

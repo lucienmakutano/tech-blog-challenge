@@ -1,7 +1,7 @@
 try:
     from flask_wtf import FlaskForm
     from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
-    from wtforms import StringField, PasswordField, SubmitField
+    from wtforms import StringField, PasswordField, SubmitField, TextAreaField
     from blog_app.model import Users
     import email_validator
 except ModuleNotFoundError:
@@ -26,3 +26,9 @@ class Register(FlaskForm):
 
         if user:
             raise ValidationError("This email is already taken")
+
+
+class BlogForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('create')

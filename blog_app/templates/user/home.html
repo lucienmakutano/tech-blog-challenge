@@ -1,18 +1,29 @@
 {% extends('base.html') %}
 
 {% block content %}
-    <div class="card">
-        <div class="card-body">
-            <div class="card-title">blog title</div>
-            <div class="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias
-                dolores enim est et eum incidunt itaque iure maiores neque nihil,
-                nulla odio odit quas repudiandae sapiente sunt, voluptas, voluptate
-                voluptates.
+    <div>
+        {% for blog in blogs.items %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="card-title text-capitalize">{{ blog.title }}</div>
+                    <div class="card-text">
+                        {{ blog.content }}
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    {{ blog.writer.name }} - <time>{{ blog.date_posted.strftime('%a %d %b, %Y') }}</time>
+                </div>
             </div>
-        </div>
-        <div class="card-footer text-muted">
-            author - published date
-        </div>
+        {% endfor %}
+
+        {% for page_num in blogs.iter_pages() %}
+            {% if page_num %}
+                {% if blogs.page == page_num %}
+                    <a class="btn btn-info" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+                {% else %}
+                    <a class="btn btn-outline-info" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
     </div>
 {% endblock %}
