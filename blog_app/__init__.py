@@ -10,7 +10,7 @@ except ModuleNotFoundError:
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = token_hex(32)
+app.config['SECRET_KEY'] = b']~`\xb8X\xecCi0\r\x9fS\xc8C\xb0\xc6'
 
 db = SQLAlchemy(app)
 
