@@ -10,8 +10,21 @@
                         {{ blog.content }}
                     </div>
                 </div>
-                <div class="card-footer text-muted">
-                    {{ blog.writer.name }} - <time>{{ blog.date_posted.strftime('%a %d %b, %Y') }}</time>
+                <div class="card-footer text-muted d-flex justify-content-between">
+                    <div>{{ blog.writer.name }} - <time>{{ blog.date_posted.strftime('%a %d %b, %Y') }}</time></div>
+                    {% if current_user.id == blog.writer.id %}
+                        <div>
+                            <a href="{{ url_for('edit', blog_id=blog.id) }}">Edit</a>
+
+                            <a id="delete"
+                               class="ml-3"
+                               style="color: #dc3545 !important; "
+                               href="{{ url_for('delete', blog_id=blog.id) }}"
+                            >
+                                Delete
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}

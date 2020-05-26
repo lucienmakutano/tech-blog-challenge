@@ -1,0 +1,46 @@
+{% extends('base.html') %}
+
+{% block content %}
+    <div>
+        {% if blogs.items %}
+            {% for blog in blogs.items %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="card-title text-capitalize">{{ blog.title }}</div>
+                        <div class="card-text">
+                            {{ blog.content }}
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted d-flex justify-content-between" >
+                        <div>{{ blog.writer.name }} - <time>{{ blog.date_posted.strftime('%a %d %b, %Y') }}</time></div>
+                        <div>
+                            <a href="{{ url_for('edit', blog_id=blog.id) }}">Edit</a>
+
+                            <a id="delete"
+                               style="color: #dc3545 !important; "
+                               href="{{ url_for('delete', blog_id=blog.id) }}"
+                            >
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% for page_num in blogs.iter_pages() %}
+                {% if page_num %}
+                    {% if blogs.page == page_num %}
+                        <a class="btn btn-info" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+                    {% else %}
+                        <a class="btn btn-outline-info" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="image-container">
+                <img src="{{ url_for('static', filename='images/blog.png')}}" alt="empty blog">
+            </div>
+            You have not written any blog. <a href="{{ url_for('create')}}">Start writing today</a>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -5,3 +5,13 @@
 ul li {
     list-style: none;
 }
+
+.image-container {
+    width: 300px;
+}
+
+.image-container img {
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+}

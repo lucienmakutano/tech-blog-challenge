@@ -1,40 +1,61 @@
 try:
-    from blog_app import app, db
-    from flask import render_template, request, redirect, url_for
-    from flask_login import current_user, login_required
-    from blog_app.forms import BlogForm
+    from blog_app import app, db, login_manager
+    from flask_login import login_required, current_user
     from blog_app.model import Blog
-    from datetime import datetime
+    from flask import render_template, request, redirect, url_for, flash
+    from blog_app.forms import UpdateBlogForm
 except ModuleNotFoundError:
     print('module not found')
 
 
-@app.route('/', methods=['GET'])
-@app.route('/home', methods=['GET'])
-def home():
-    page = request.args.get('page', type=int, default=1)
-
-    blogs = Blog.query.order_by(Blog.date_posted.desc()).paginate(page=page, per_page=5)
-
-    return render_template('user/home.html', blogs=blogs)
-
-
-@app.route('/create', methods=['GET', 'POST'])
+@app.route('/dashboard/<int:user_id>')
 @login_required
-def create():
-    form = BlogForm()
+def dashboard(user_id):
+    page = request.args.get('page')
+
+    blogs = Blog.query.filter_by(author=user_id).paginate(page=page, per_page=5)
+
+    return render_template('user/dashboard.html', blogs=blogs)
+
+
+@app.route('/dashboard/edit/<int:blog_id>', methods=['GET', 'POST'])
+@login_required
+def edit(blog_id):
+    blog = Blog.query.get(int(blog_id))
+    form = UpdateBlogForm()
+
     if request.method == 'GET':
-        return render_template('user/blog.html', form=form)
+        if blog:
+            form.title.data = blog.title
+            form.content.data = blog.content
+
+            return render_template('user/edit.html', form=form, blog_id=blog_id)
 
     if form.validate_on_submit():
-        title = form.title.data
-        content = form.content.data
 
-        blog = Blog(title=title, content=content, author=current_user.id)
+        blog.title = form.title.data
+        blog.content = form.content.data
 
-        db.session.add(blog)
         db.session.commit()
 
-        return redirect(url_for('home'))
+        flash('your update was successful', 'success')
 
-    return render_template('user/blog.html', form=form)
+        return redirect(url_for('edit', blog_id=blog_id))
+
+    return render_template('user/edit.html', form=form, blog_id=blog_id)
+
+
+@app.route('/dashboard/delete/<int:blog_id>', methods=['GET'])
+@login_required
+def delete(blog_id):
+
+    blog = Blog.query.get(int(blog_id))
+
+    if blog:
+        db.session.delete(blog)
+
+        db.session.commit()
+
+        return redirect(url_for('dashboard', user_id=current_user.id))
+
+    return redirect(url_for('dashboard', user_id=current_user.id))

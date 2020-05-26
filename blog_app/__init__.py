@@ -22,4 +22,5 @@ login_manager.login_message_category = 'warning'
 bcrypt = Bcrypt(app)
 
 from blog_app.session_manager import login, register
-from blog_app.user import home
+from blog_app.users import home, create
+from blog_app.user import dashboard
