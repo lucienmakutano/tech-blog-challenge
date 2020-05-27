@@ -18,3 +18,8 @@ go to /create
 We all know that no human is perfect, that why we have worked so hard to enable you 
 to edit your blog for any mistake you have made, or delete a blog if you feel like it.
 🎉🎉🎉🎉
+
+### new feature day - 27
+you ask for it, we deliver. Now you can show some love to the writer of the blog by liking it.
+Happy reading.
+🎉🎉🎉🎉
