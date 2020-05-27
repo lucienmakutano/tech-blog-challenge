@@ -15,3 +15,20 @@ ul li {
     margin: 0 auto;
     display: block;
 }
+
+.ellipsis {
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+}
+
+.far.fa-heart,
+.fas.fa-heart {
+    color: #dc3545 !important;
+}
+
+.far.fa-heart:hover,
+.fas.fa-heart:hover {
+    cursor: pointer !important;
+    transition: cursor 200ms ease-in-out !important;
+}

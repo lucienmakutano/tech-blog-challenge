@@ -1,0 +1,33 @@
+{% extends('base.html') %}
+
+{% block content %}
+    {% if blog %}
+        <div class="card border-0">
+            <div class="card-body">
+                <div class="card-title h4">{{ blog.title }}</div>
+                <div class="card-text">
+                    {{ blog.content }}
+                </div>
+            </div>
+            {% if current_user.is_authenticated %}
+                <div class="card-footer">
+                    {% if like %}
+                        <i 
+                            data-blog_id="{{ blog.id }}"
+                            data-like="{{ like.like }}"
+                            class="fas fa-heart"></i>
+                    {% else %}
+                        <i 
+                            data-blog_id="{{ blog.id }}"
+                            class="far fa-heart"></i>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='images/404.png')}}" alt="empty blog">
+        </div>
+        We could not found the blog that you are looing for. <a href="{{ url_for('home')}}">home</a>
+    {% endif %}
+{% endblock %}

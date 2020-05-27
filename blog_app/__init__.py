@@ -2,7 +2,7 @@ try:
     from flask import Flask, url_for
     from flask_sqlalchemy import SQLAlchemy
     from flask_login import LoginManager
-    from secrets import token_hex
+    from secrets import token_bytes
     from flask_bcrypt import Bcrypt
 except ModuleNotFoundError:
     print('module not found')

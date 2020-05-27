@@ -3,8 +3,9 @@ try:
     from flask import render_template, request, redirect, url_for
     from flask_login import current_user, login_required
     from blog_app.forms import BlogForm
-    from blog_app.model import Blog
+    from blog_app.model import Blog, Likes
     from datetime import datetime
+    import json
 except ModuleNotFoundError:
     print('module not found')
 
@@ -38,3 +39,39 @@ def create():
         return redirect(url_for('home'))
 
     return render_template('user/blog.html', form=form)
+
+
+@app.route('/post/<int:blog_id>', methods=['GET'])
+def view_blog(blog_id):
+
+    if request.method == 'GET':
+        blog = Blog.query.get(int(blog_id))
+
+        if current_user.is_authenticated:
+
+            like = Likes.query.filter_by(user_id=current_user.id, blog_id=blog_id).first()
+
+            return render_template('user/view_blog.html', blog=blog, like=like)
+
+        return render_template('user/view_blog.html', blog=blog)
+
+
+@app.route('/like-dislike', methods=['POST'])
+def like():
+    
+    if request.method == 'POST':
+        blog_id = request.form.get('blog_id')
+        like = Likes.query.filter_by(blog_id=blog_id, user_id=current_user.id).first()
+
+        if like:
+            db.session.delete(like)
+        else:
+            like = Likes(like=1, blog_id=blog_id, user_id=current_user.id)
+
+            db.session.add(like)
+
+        db.session.commit()
+
+        return json.dumps({"status": "success"})
+
+

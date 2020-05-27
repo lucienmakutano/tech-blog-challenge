@@ -5,8 +5,10 @@
         {% for blog in blogs.items %}
             <div class="card mb-3">
                 <div class="card-body">
-                    <div class="card-title text-capitalize">{{ blog.title }}</div>
-                    <div class="card-text">
+                    <div class="card-title text-capitalize">
+                        <a href="{{ url_for('view_blog', blog_id=blog.id)}}">{{ blog.title }}</a>
+                    </div>
+                    <div class="card-text ellipsis">
                         {{ blog.content }}
                     </div>
                 </div>
